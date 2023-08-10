@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  test-keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: test_keycloak
+    restart: unless-stopped
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    ports:
+      - '${KEYCLOAK_PORT:-8081}:8080'
+    volumes:
+      - ./test/keycloak-realms:/opt/keycloak/data/import
+    command: start-dev --import-realm
